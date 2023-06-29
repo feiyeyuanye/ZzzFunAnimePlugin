@@ -110,37 +110,35 @@ object ParseHtmlUtil {
         val classifyItemDataList = mutableListOf<ClassifyItemData>()
         var classifyCategory = ""
 
-        // 语言
-        val timeSelection = element.select(".time-selection")
-
-        timeSelection.apply {
-            // 时间
-            classifyCategory =
-                this.select(".tag-title").text().replace(":", "").replace("：", "")
+        // 时间
+        element.select(".time-wrap").apply {
+            classifyCategory = select(".tag-title").text().replace(":", "").replace("：", "")
                     .trim()
-                this.select(".select-container").select(".li").forEach {
-                val a = it.select("a")
+            select(".select-container").select("li").select("a").forEach {
                 classifyItemDataList.add(ClassifyItemData().apply {
+                    var href = it.attr("href")
+                    if (href == "#") href="/vod_show_id_1.html"
                     action = ClassifyAction.obtain(
-                        a.attr("href").apply {
-                            Log.d("分类链接", this)
+                        href.apply {
+//                            Log.e("TAG-时间分类链接", this)
                         },
                         classifyCategory,
-                        a.text()
+                        it.text()
                     )
                 })
             }
         }
-        // 类型
-        timeSelection.select("#vArea").apply {
-            classifyCategory =
-                this.select(".tag-title").text().replace(":", "").replace("：", "")
+        // 语言
+        element.select("#vArea").apply {
+            classifyCategory = select(".tag-title").text().replace(":", "").replace("：", "")
                     .trim()
-               this.select("a").forEach {
+            select("a").forEach {
                 classifyItemDataList.add(ClassifyItemData().apply {
+                    var href = it.attr("href")
+                    if (href == "#") href="/vod_show_id_1.html"
                     action = ClassifyAction.obtain(
-                        it.attr("href").apply {
-                            Log.d("分类链接", this)
+                        href.apply {
+//                            Log.e("TAG-语言分类链接", this)
                         },
                         classifyCategory,
                         it.text()
@@ -149,15 +147,16 @@ object ParseHtmlUtil {
             }
         }
         // 类型
-        timeSelection.select("#playType").apply {
-            classifyCategory =
-                this.select(".tag-title").text().replace(":", "").replace("：", "")
+        element.select("#playType").apply {
+            classifyCategory = select(".tag-title").text().replace(":", "").replace("：", "")
                     .trim()
-              this.select("a").forEach {
+            select("a").forEach {
                 classifyItemDataList.add(ClassifyItemData().apply {
+                    var href = it.attr("href")
+                    if (href == "#") href="/vod_show_id_1.html"
                     action = ClassifyAction.obtain(
-                        it.attr("href").apply {
-                            Log.d("分类链接", this)
+                        href.apply {
+//                            Log.e("TAG-类型分类链接", this)
                         },
                         classifyCategory,
                         it.text()
@@ -166,15 +165,16 @@ object ParseHtmlUtil {
             }
         }
         // 剧情
-        timeSelection.select("div").last()?.apply {
-            classifyCategory =
-                this.select(".tag-title").text().replace(":", "").replace("：", "")
+        element.select(".tag-item")[2].apply {
+            classifyCategory = select(".tag-title").text().replace(":", "").replace("：", "")
                     .trim()
-            this.select("a").forEach {
+            select("a").forEach {
                 classifyItemDataList.add(ClassifyItemData().apply {
+                    var href = it.attr("href")
+                    if (href == "#") href="/vod_show_id_1.html"
                     action = ClassifyAction.obtain(
-                        it.attr("href").apply {
-                            Log.d("分类链接", this)
+                        href.apply {
+//                            Log.e("TAG-剧情分类链接", this)
                         },
                         classifyCategory,
                         it.text()
@@ -183,17 +183,16 @@ object ParseHtmlUtil {
             }
         }
         // 字母
-        timeSelection.select("englishLetter").apply {
+        element.select(".englishLetter").apply {
             classifyCategory = "字母"
-            this.select("li").forEach {
+            select("li").select("a").forEach {
                 classifyItemDataList.add(ClassifyItemData().apply {
-                    val a = it.select("a")
                     action = ClassifyAction.obtain(
-                        a.attr("href").apply {
-                            Log.d("分类链接", this)
+                        it.attr("href").apply {
+//                            Log.e("TAG-字母分类链接", this)
                         },
                         classifyCategory,
-                        a.text()
+                        it.text()
                     )
                 })
             }
